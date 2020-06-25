@@ -1,0 +1,14 @@
+{
+    "used.diamond_pickaxe": {
+        "scoreboard_name":"pickaxe",
+        "stats_category": "used",
+        "stats_content": "diamond_pickaxe",
+        "display_name": "挖掘榜"
+    },
+    "custom.time_since_rest": {
+        "scoreboard_name":"since_rest",
+        "stats_category": "custom",
+        "stats_content": "time_since_rest",
+        "display_name": "在线榜"
+    }
+}

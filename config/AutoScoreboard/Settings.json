@@ -1,0 +1,7 @@
+{
+    "time_per_scoreboard(second)": 3,
+    "start_command": "!!asb start",
+    "start_command_permission_level": 1,
+    "stop_command": "!!asb stop",
+    "stop_command_permission_level": 1
+}
