@@ -54,7 +54,7 @@ sys
 
 ​	榜单列表保存在“MCDR根目录/config/AutoScoreboard/ScoreBoards.json”中，其中对象名作为便于修改时找到对应榜单的标识，而不作为插件创建榜单的内容，但请避免使用中文。
 
-​	scoreboard_name作为创建榜单时的名称，若Settings.json中Prevent_list_confusion属性的值为true，则创建时榜单的名称会为“asb.”+scoreboard_name。
+​	scoreboard_name作为创建榜单时的名称，若Settings.json中Prevent_list_confusion属性的值为true，则创建时榜单的名称会为“asb.”+scoreboard_name。**注意此项不能超过16个字符。**
 
 ​	stats_category属性：
 
