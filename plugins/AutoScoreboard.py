@@ -6,21 +6,16 @@ import os
 import colorama
 import sys
 
-
 # 目录
-Config_Path = os.getcwd().split('\plugins')[0] + '\config\AutoScoreboard'
+Config_Path = '{}\config\AutoScoreboard'.format(os.getcwd().replace('\plugins', ''))
 
 
 # 查找文件
 def search(path, name):
-    for root, dirs, files in os.walk(path):
-        if name in dirs or name in files:
-            flag = 1
-            root = str(root)
-            dirs = str(dirs)
-            return True
-        else:
-            return False
+    if os.path.exists(Config_Path + '\{}'.format(name)):
+        return True
+    else:
+        return False
 
 
 # 检查配置文件
@@ -60,11 +55,22 @@ def load_settings():
     global start_command_pl
     # 结束指令权限
     global stop_command_pl
+    # 帮助指令
+    global help_command
     tps = settings['time_per_scoreboard(second)']
     start_command = settings['start_command']
     stop_command = settings['stop_command']
+    help_command = settings['help_command']
     start_command_pl = settings['start_command_permission_level']
     stop_command_pl = settings['stop_command_permission_level']
+    # 防止榜单混淆
+    global command_prefix
+    if settings['Prevent_list_confusion'] == True:
+        command_prefix = 'asb.'
+    elif settings['Prevent_list_confusion'] == False:
+        command_prefix = ''
+    else:
+        pass
 
 
 # 读取榜单列表
@@ -77,22 +83,26 @@ def load_scoreboards():
 
 # 创建计分板
 def add_scoreboards(server):
-    global as_command
+    type_1 = ['air', 'armor', 'deathCount', 'dummy', 'food', 'health', 'level', 'xp']
+    type_2 = ['killedByTeam', 'teamkill']
+    type_3 = ['broken', 'crafted', 'custom', 'dropped', 'killed', 'killed_by', 'mined', 'picked_up', 'used']
+    global formed_command
     for scoreboard in boards:
-        scoreboard_name = 'asb.' + boards[scoreboard]['scoreboard_name']
+        scoreboard_name = command_prefix + boards[scoreboard]['scoreboard_name']
         criterion_1 = boards[scoreboard]['stats_category']
         display_name = '"' + boards[scoreboard]['display_name'] + '"'
-        if criterion_1 == 'air' or criterion_1 == 'armor' or criterion_1 == 'deathCount' or criterion_1 == 'dummy' or criterion_1 == 'food' or criterion_1 == 'health' or criterion_1 == 'level':
-            as_command = '/scoreboard objectives add {} {} {}'.format(scoreboard_name, criterion_1, display_name)
-        elif criterion_1 == 'killedByTeam' or criterion_1 == 'teamkill':
+        if criterion_1 in type_1:
+            formed_command = '/scoreboard objectives add {} {} {}'.format(scoreboard_name, criterion_1, display_name)
+        elif criterion_1 in type_2:
             criterion_2 = boards[scoreboard]['stats_content']
-            as_command = '/scoreboard objectives add {} {} {} {}'.format(scoreboard_name, criterion_1, criterion_2, display_name)
-        elif criterion_1 == 'broken' or criterion_1 == 'crafted' or criterion_1 == 'custom' or criterion_1 == 'dropped' or criterion_1 == 'killed' or criterion_1 == 'killed_by' or criterion_1 == 'mined' or criterion_1 == 'picked_up' or criterion_1 == 'used':
+            formed_command = '/scoreboard objectives add {} {}.{} {}'.format(scoreboard_name, criterion_1, criterion_2, display_name)
+        elif criterion_1 in type_3:
             criterion_2 = boards[scoreboard]['stats_content']
-            as_command = '/scoreboard objectives add {} minecraft.{}:minecraft.{} {}'.format(scoreboard_name, criterion_1, criterion_2, display_name)
+            formed_command = '/scoreboard objectives add {} minecraft.{}:minecraft.{} {}'.format(scoreboard_name, criterion_1, criterion_2, display_name)
         else:
             pass
-        server.execute(as_command)
+        time.sleep(0.1)
+        server.execute(formed_command)
     else:
         pass
 
@@ -101,9 +111,8 @@ def add_scoreboards(server):
 def display(server):
     while state == 1:
         for scoreboard in boards:
-            command = '/scoreboard objectives setdisplay sidebar ' + 'asb.' + boards[scoreboard]['scoreboard_name']
+            command = '/scoreboard objectives setdisplay sidebar {}{}'.format(command_prefix, boards[scoreboard]['scoreboard_name'])
             server.execute(command)
-            server.say(state)
             time.sleep(tps)
     else:
         pass
@@ -118,6 +127,7 @@ def on_load(server, old_module):
     state = 1
     load_settings()
     load_scoreboards()
+    server.add_help_message(help_command, '显示AutoScoreBoard帮助信息')
     server.add_help_message(start_command, '启动滚动计分板')
     server.add_help_message(stop_command, '暂停滚动计分板')
 
@@ -132,7 +142,6 @@ def on_info(server, info):
         global state
         if server.get_permission_level(info) >= start_command_pl:
             state = 1
-            server.say(state)
             display(server)
         else:
             server.reply(info, '§4你没有使用这个命令的权限！', encoding="utf-8")
@@ -141,6 +150,7 @@ def on_info(server, info):
             state = 0
         else:
             server.reply(info, '§4你没有使用这个命令的权限！', encoding="utf-8")
-    if info.content.startswith('!!ASB help') and info.is_player:
-        server.reply(info, start_command + '启动滚动计分板', encoding="utf-8")
-        server.reply(info, stop_command + '暂停滚动计分板', encoding="utf-8")
+    if info.content == help_command and info.is_player:
+        help_info = ['========MCDR AutoScoreBoard 插件========', start_command + '启动滚动计分板', stop_command + '暂停滚动计分板', '======================================']
+        for line in help_info:
+            server.reply(info, line, encoding='utf-8')

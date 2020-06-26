@@ -5,6 +5,17 @@
         "stats_content": "diamond_pickaxe",
         "display_name": "挖掘榜"
     },
+    "TK": {
+        "scoreboard_name":"tk",
+        "stats_category": "teamkill",
+        "stats_content": "blue",
+        "display_name": "TK榜"
+    },
+    "xp": {
+        "scoreboard_name":"xpboard",
+        "stats_category": "xp",
+        "display_name": "经验榜"
+    },
     "custom.time_since_rest": {
         "scoreboard_name":"since_rest",
         "stats_category": "custom",
