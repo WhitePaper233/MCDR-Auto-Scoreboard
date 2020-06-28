@@ -54,7 +54,7 @@ sys
 
 ## 5.配置榜单文件
 
-​	榜单列表保存在“MCDR根目录/config/AutoScoreboard/ScoreBoards.json”中，其中对象名作为便于修改时找到对应榜单的标识，而不作为插件创建榜单的内容，但请避免使用中文。
+​	榜单列表保存在“MCDR根目录/config/AutoScoreboard/ScoreBoards.json”中，其中对象名作为便于修改时找到对应榜单的标识，而不作为插件创建榜单的名字，但请避免使用中文。
 
 ​	scoreboard_name作为创建榜单时的名称，若Settings.json中Prevent_list_confusion属性的值为true，则创建时榜单的名称会为“asb.”+scoreboard_name。**注意此项不能超过16个字符。**
 
@@ -114,7 +114,7 @@ sys
 例子：
 
 ```
-"used.diamond_pickaxe": {
+    "used.diamond_pickaxe": {
         "scoreboard_name":"pickaxe",
         "stats_category": "used",
         "stats_content": "diamond_pickaxe",
@@ -123,7 +123,3 @@ sys
 ```
 
 ​		4.display_name：计分板显示的名称，可中文。
-
-## 6.注意
-
-​	使用MCDR或其他插件禁用本插件前请务必使用停止指令，不然榜单会一直循环！
