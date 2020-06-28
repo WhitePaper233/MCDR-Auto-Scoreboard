@@ -7,7 +7,8 @@ import colorama
 import sys
 
 # 目录
-Config_Path = os.path.join(os.path.dirname('plugins'),'config','AutoScoreboard')
+Config_Path = os.path.join(os.path.dirname('plugins'), 'config', 'AutoScoreboard')
+
 
 # 查找文件
 def search(name):
@@ -94,10 +95,14 @@ def add_scoreboards(server):
             formed_command = '/scoreboard objectives add {} {} {}'.format(scoreboard_name, criterion_1, display_name)
         elif criterion_1 in type_2:
             criterion_2 = boards[scoreboard]['stats_content']
-            formed_command = '/scoreboard objectives add {} {}.{} {}'.format(scoreboard_name, criterion_1, criterion_2, display_name)
+            formed_command = '/scoreboard objectives add {} {}.{} {}'.format(scoreboard_name, criterion_1, criterion_2,
+                                                                             display_name)
         elif criterion_1 in type_3:
             criterion_2 = boards[scoreboard]['stats_content']
-            formed_command = '/scoreboard objectives add {} minecraft.{}:minecraft.{} {}'.format(scoreboard_name, criterion_1, criterion_2, display_name)
+            formed_command = '/scoreboard objectives add {} minecraft.{}:minecraft.{} {}'.format(scoreboard_name,
+                                                                                                 criterion_1,
+                                                                                                 criterion_2,
+                                                                                                 display_name)
         else:
             pass
         time.sleep(0.1)
@@ -110,7 +115,8 @@ def add_scoreboards(server):
 def display(server):
     while state == 1:
         for scoreboard in boards:
-            command = '/scoreboard objectives setdisplay sidebar {}{}'.format(command_prefix, boards[scoreboard]['scoreboard_name'])
+            command = '/scoreboard objectives setdisplay sidebar {}{}'.format(command_prefix,
+                                                                              boards[scoreboard]['scoreboard_name'])
             server.execute(command)
             time.sleep(tps)
     else:
@@ -150,6 +156,13 @@ def on_info(server, info):
         else:
             server.reply(info, '§4你没有使用这个命令的权限！', encoding="utf-8")
     if info.content == help_command and info.is_player:
-        help_info = ['========MCDR AutoScoreBoard 插件========', start_command + '启动滚动计分板', stop_command + '暂停滚动计分板', '======================================']
+        help_info = ['========MCDR AutoScoreBoard 插件========', start_command + '启动滚动计分板', stop_command + '暂停滚动计分板',
+                     '======================================']
         for line in help_info:
             server.reply(info, line, encoding='utf-8')
+
+
+# 卸载插件
+def on_unload(server):
+    global state
+    state = 0
