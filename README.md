@@ -1,6 +1,6 @@
 # MCDR-Auto-Scoreboard自动换榜插件
 
-感谢@[**YehowahLiu**](https://github.com/YehowahLiu)修复了Linux系统下配置文件路径错误的BUG
+感谢[@**YehowahLiu**](https://github.com/YehowahLiu)修复了Linux系统下配置文件路径错误的BUG
 
 ------
 

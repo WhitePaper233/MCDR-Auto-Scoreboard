@@ -10,7 +10,7 @@ import sys
 Config_Path = os.path.join(os.path.dirname('plugins'),'config','AutoScoreboard')
 
 # 查找文件
-def search(path, name):
+def search(name):
     if os.path.exists(Config_Path + os.sep + name):
         return True
     else:
@@ -22,12 +22,12 @@ def check_config_file():
     check_config_1 = 0
     check_config_2 = 0
 
-    if search(Config_Path, 'Settings.json'):
+    if search('Settings.json'):
         check_config_1 = 1
     else:
         print(colorama.Fore.RED, '[AutoScoreboard插件][警告]AutoScoreboard配置文件“Settings.json”丢失', colorama.Fore.WHITE)
 
-    if search(Config_Path, 'ScoreBoards.json'):
+    if search('ScoreBoards.json'):
         check_config_2 = 1
     else:
         print(colorama.Fore.RED, '[AutoScoreboard插件][警告]AutoScoreboard配置文件“ScoreBoards.json”丢失', colorama.Fore.WHITE)
@@ -89,7 +89,7 @@ def add_scoreboards(server):
     for scoreboard in boards:
         scoreboard_name = command_prefix + boards[scoreboard]['scoreboard_name']
         criterion_1 = boards[scoreboard]['stats_category']
-        display_name = '"' + boards[scoreboard]['display_name'] + '"'
+        display_name = '"{}"'.format(boards[scoreboard]['display_name'])
         if criterion_1 in type_1:
             formed_command = '/scoreboard objectives add {} {} {}'.format(scoreboard_name, criterion_1, display_name)
         elif criterion_1 in type_2:
