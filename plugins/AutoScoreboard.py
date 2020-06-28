@@ -7,12 +7,11 @@ import colorama
 import sys
 
 # 目录
-Config_Path = '{}\config\AutoScoreboard'.format(os.getcwd().replace('\plugins', ''))
-
+Config_Path = os.path.join(os.path.dirname('plugins'),'config','AutoScoreboard')
 
 # 查找文件
 def search(path, name):
-    if os.path.exists(Config_Path + '\{}'.format(name)):
+    if os.path.exists(Config_Path + os.sep + name):
         return True
     else:
         return False
@@ -43,7 +42,7 @@ def check_config_file():
 # 读取设置文件
 def load_settings():
     # 读取json文件
-    settingsfile = open(Config_Path + '\Settings.json', encoding="utf-8")
+    settingsfile = open(Config_Path + os.sep + 'Settings.json', encoding="utf-8")
     settings = json.load(settingsfile)
     # 榜单间隔
     global tps
@@ -76,7 +75,7 @@ def load_settings():
 # 读取榜单列表
 def load_scoreboards():
     # 读取json文件
-    boards_file = open(Config_Path + '\ScoreBoards.json', encoding="utf-8")
+    boards_file = open(Config_Path + os.sep + 'ScoreBoards.json', encoding="utf-8")
     global boards
     boards = json.load(boards_file)
 
